@@ -1,0 +1,576 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+$primary:  #222831;
+$surface: #eee;//#a3f7bf;
+$secondary: darken($surface, 10%);
+$error: #830e0a;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    position: relative;
+    background: $primary;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+.wrapper {
+    height: 100%;
+    width: 100%;
+    .menus {
+        width: 100%;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        padding-left: 2rem;
+        border-bottom: .2rem solid darken($surface, 60%);
+        //box-shadow: inset -.1rem -.1rem 1rem darken($primary, 10%);
+        .logo {
+            img{
+                height: 5rem;
+                width: 5rem;
+                border-radius: .5rem;
+                //box-shadow: inset .3rem .3rem .8rem lighten($primary, 30%), inset -.3rem -.3rem .8rem darken($primary, 40%);
+            }
+        }
+        .menu{
+            height: 4rem;
+            li{
+                position: relative;
+                list-style: none;
+                display: inline-block;
+                text-align: center;
+                line-height: 4rem;
+                height: 4rem;
+                width: 8rem;
+                cursor: pointer;
+                color: $surface;
+                border-radius: .3rem;
+                font-size: 1.6rem;
+                &:hover > .sub-menus {
+                    display: flex;
+                }
+                &:hover{
+                    box-shadow: inset 3px 3px 6px lighten($primary, 15%), inset -3px -3px 6px darken($primary, 40%);
+                }
+                .sub-menus{
+                    position: absolute;
+                    display: none;
+                    flex-direction: column;
+                    width: 20rem;
+                    height: auto;
+                    background: $primary;
+                    border: .2rem solid darken($primary, 5%);
+                    z-index: 2;
+                    &::before{
+                        position: absolute;
+                        content: '';
+                        top: -1rem;
+                        left: 0;
+                        border-bottom: 1rem solid darken($primary, 5%);
+                        border-left: 1rem solid transparent;
+                        border-right: 1rem solid transparent;
+                    }
+                    li{
+                        flex: 1;
+                        display: flex;
+                        font-size: 1.3rem;
+                        height: 4rem;
+                        width: 100%;
+                        text-align: left;
+                        cursor: pointer;
+                        color: $surface;
+                        transition: .2s ease-in;
+                        border-bottom: .1rem solid darken($primary, 10%);
+                        &:hover{
+                           box-shadow: inset .2rem .2rem .8rem lighten($primary, 30%), inset -.4rem -.4rem .8rem darken($primary, 50%);
+                        }
+                        input[type='file']{
+                            display: none;
+                        }
+                        label{
+                            flex: 2;
+                            height: 100%;
+                            display: block;
+                            cursor: pointer;
+                            line-height: 4rem;
+                        }
+                        .any{
+                            flex: 1;
+                            line-height: 4rem;
+                            text-align: center;
+                            font-size: 2rem;
+                        }
+                        .fas{
+                            flex: 1;
+                            line-height: 4rem;
+                            text-align: center;
+                            font-size: 2rem;
+                        }
+                        input{
+                            text-align: center;
+                            flex: 1;
+                            margin-top: 1rem;
+                            height: 2rem;
+                            width: 2rem;
+                            border: none;
+                            cursor: pointer;
+                            outline: none;
+                            &:focus{
+                                outline: none;
+                                border: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.errorPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 40px;
+    width: 300px;
+    background: $error;
+    font-size: 1.6rem;
+    border-radius: .5rem;
+    color: $surface;
+    display: none;
+    place-items: center;
+}
+.err{
+    display: grid;
+}
+#contextMenu {
+    position: absolute;
+    display: none;
+    border: .1rem solid $surface;
+    flex-direction: column;
+    width: 20rem;
+    height: auto;
+    background: $primary;
+    
+    button{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        height: 3rem;
+        line-height: 3rem;
+        border: none;
+        background: $primary;
+        color: $surface;
+        cursor: pointer;
+        &:hover {
+            box-shadow: inset .3rem .3rem .6rem lighten($primary,20%), inset -.2rem -.2rem .4rem darken($primary, 20%);
+        }
+        label {
+            cursor: pointer;
+        }
+    }
+}
+#confirmPopup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 2, 2, 0.8);
+    z-index: 3;
+    .box{
+        width: 35rem;
+        height: 14rem;
+        background: $primary;
+        color: $surface;
+        border-radius: .5rem;
+        box-shadow: inset .6rem .6rem 1rem lighten($primary,30%), inset -.6rem -.6rem 1rem darken($primary, 30%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .message{
+        flex: 1;
+        line-height: 7rem;
+        font-size: 1.7rem;
+    }
+    .confirmButtons{
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        a{
+            width: 8.5rem;
+            height: 3rem;
+            cursor: pointer;
+            border-radius: .4rem;
+            transition: .2s ease-in;
+            display:  block;
+            text-align: center;
+            line-height: 3rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            color: $surface;
+            background: $primary;
+            border: none;//.1rem solid darken($primary,30%);
+            box-shadow: inset .5rem .5rem 1rem lighten($primary,40%), inset -.3rem -.3rem .8rem darken($primary, 30%);
+            &:hover{
+                box-shadow: inset -.5rem -.5rem 1rem lighten($primary,40%), inset .5rem .5rem 1rem darken($primary, 40%); 
+            }
+        }
+    }
+}
+.shapeTools{
+    margin: 1rem auto;
+    padding-left: 5rem;
+    height: 3rem;
+    gap: .5rem;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+    #stroke {
+        width: 15rem;
+        height: 2.5rem;
+        border: .1rem solid #fff;
+        margin: 5rem 0rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    #lineWidth {
+        border: .1rem solid #fff;
+        width: 7rem;
+        height: 2.5rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    .cp_wrapper {
+        position: relative;
+        border: .1rem solid #fff;
+        overflow: hidden;
+        width: 10rem;
+        height: 2.5rem;
+        display: grid;
+        place-items: center;
+    }
+    .background{
+        position: absolute;
+        font-size: 1.4rem;
+        pointer-events: none;
+    }
+    #strokeColor,#fillColor {
+        width: 200%;
+        height: 200%;
+    }
+    
+}
+.textTools{
+    margin: 1rem auto;
+    padding-left: 5rem;
+    height: 3rem;
+    gap: .5rem;
+    width: 80%;
+    display: none;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+    .fontName {
+        width: 15rem;
+        height: 2.5rem;
+        border: .1rem solid #fff;
+        margin: 5rem 0rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    .fontSize {
+        border: .1rem solid #fff;
+        width: 7rem;
+        height: 2.5rem;
+        &:focus {
+            outline: none;
+        }
+    }
+}
+.container {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    margin-top: 1rem;
+    width: 100%;
+    gap: .5rem;
+    height: calc(100% - 9rem);
+    .tools {
+        width: 8rem;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: .5rem;
+        #file{
+            display: none;
+        }
+        .button {
+            height: 3rem;
+            width: 3rem;
+            font-size: 1.8rem;
+            font-weight: bolder;
+            position: relative;
+            background: $primary;
+            color: $secondary;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            transition: .3s ease-in;
+            box-shadow: inset 3px 3px 8px lighten($primary, 50%), inset -3px -3px 6px darken($primary, 50%);  
+            &::after {
+                content: attr(data-title);
+                position: absolute;
+                height: 2rem;
+                width: 10rem;
+                background: rgba(03,50,65,.7);
+                color: $surface;
+                left: 100%;
+                top: .5rem;
+                line-height: 2rem;
+                font-size: 1.4rem;
+                font-weight: normal;
+                display: none;
+                
+                border-radius: .4rem ;
+            }
+            &:hover{
+                box-shadow: inset -.3rem -.3rem .8rem lighten($primary,20%), inset .3rem .3rem .8rem darken($primary, 40%); 
+            }
+            &:hover::after {
+                display: none;
+            }
+            .fas{
+                margin: .6rem .5rem;
+            }
+        }
+        .activeBtn{
+            background: #0390c0;
+            color: $surface;
+            outline: none;
+            box-shadow: none;
+        }
+        .polygonOptions{
+            position: absolute;
+            top: 32rem;
+            left: 8rem;
+            display: none;
+            background: $primary;
+            border: .2rem solid $primary;
+            padding: 1rem;
+            grid-template-rows: 4rem;
+            border-radius: 1rem;
+            grid-template-columns: repeat(auto-fit, 3rem);
+            box-shadow: inset .2rem .2rem .7rem darken($primary, 100%), inset -.2rem -.2rem .7rem lighten($primary, 50%);
+            gap: .5rem;
+            width: 20rem;
+            z-index: 2;
+            &::before {
+                content: "";
+                position: absolute;
+                top: .5rem;
+                left: -2.5rem;
+                border-top: 1rem solid transparent;
+                border-bottom: 1rem solid transparent;
+                border-right: 2.5rem solid darken($primary, 20%);
+            }
+            .polygonOpt{
+                border: none;
+                font-size: 2rem;
+                height: 3rem;
+                width: 3rem;
+                color: $surface;
+                background: $primary;
+                box-shadow: inset 4px 4px 7px lighten($primary, 50%), inset -4px -4px 10px darken($primary, 100%);
+                text-align: center;
+                border-radius: 50%;
+
+                &:focus{
+                    outline: none;
+                }
+            }
+        }
+        .cp_wrapper {
+            width: 4rem;
+            height: 4rem;
+            margin-top: 1rem;
+            position: relative;
+            .foreColor {
+                position: absolute;
+                height: 3rem;
+                width: 3rem;
+                overflow: hidden;
+                display: grid;
+                place-items: center;
+                input{
+                    height: 200%;
+                    width: 200%;
+                }
+            }
+            .backColor {
+                position: absolute;
+                height: 3rem;
+                width: 3rem;
+                top: 1.5rem;
+                left: 1.5rem;
+                overflow: hidden;
+                display: grid;
+                place-items: center;
+                box-shadow: 2px 2px 2px #5f0345;
+                input{
+                    height: 200%;
+                    width: 200%;
+                }
+            }
+        }
+        
+    }
+    .canvasContainer {
+        width:  calc(100% - 35rem);
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        border: .2rem solid darken($primary, 10%);
+          #leftCanvas{
+            position: absolute;
+            left: 0;
+            background: $primary;
+            z-index: 1;
+            }
+            #topCanvas{
+                position: absolute;
+                top: 0;
+                left: 1.5rem;
+                background: $primary;
+                z-index: 1;
+            }
+            #cornerCanvas {
+                position: absolute;
+                background: $primary;
+                left: 0;
+                top: 0;
+                z-index: 1;
+            }
+            .editorContainer {
+                position: relative;
+                overflow: scroll;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                scrollbar-color: darken($primary, 5%);
+                scrollbar-width: thin;
+                &::-webkit-scrollbar{
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 40px;
+                    background: $primary;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: lighten($primary, 10%);
+                    border-radius: 20px;
+                  }
+                #canvas{ 
+                    position: relative;
+                    left: 1.5rem;
+                    top: 1.5rem;
+                    transition: .5s all ease-in-out; 
+                    background: #fff;
+                    cursor: crosshair;
+                    z-index: 0;
+                }
+            }
+    }
+    .toolbar {
+        width: 20rem;
+        height: 100%;
+        margin-left: 1rem;
+        border-radius: 1rem;
+        .editor-tools{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            h1{
+                font-size: 2.5rem;
+                font-weight: bold;
+                color: $primary;
+                text-shadow: .1rem .1rem .1rem darken($primary, 50%), -.1rem -.1rem .1rem lighten($primary, 30%);
+            }
+            .canvas-tools {
+                display: grid;
+                grid-template-columns: repeat(auto-fit,minmax(8rem, 8rem));
+                gap: 1rem;
+                .tool{
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: inset .3rem .3rem .5rem lighten($primary, 30%),inset -.3rem -.3rem .5rem darken($primary, 50%);
+                    //background: darken($primary,5%);
+                    width: 8.5rem;
+                    height: 6rem;
+                    gap: .5rem;
+                    border-radius: .5rem;
+                    justify-content: center;
+                    align-items: center;
+                }
+                label{
+                    font-size: 1.2rem;
+                    color: $secondary;
+                }
+                select,input {
+                    width: 6rem;
+                    height: 2rem;
+                    border: none;
+                    border-radius: .3rem;
+                    text-align: center;
+                    color: $surface;
+                    background: $primary;
+                    box-shadow: inset -.2rem -.2rem .5rem lighten($primary, 30%), inset .2rem .2rem .5rem darken($primary, 50%);
+                    &:focus {
+                        outline: none;
+                        border: none;
+                    }
+                }
+                input [type = "color"]{
+                    transform: scale(2);
+                }
+            }
+        }
+    }
+    
+}
+@media print {
+    body *{
+        visibility: hidden;
+        display: none;
+    }
+    #canvas {
+        visibility: visible;
+    }
+    #canvas{
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
